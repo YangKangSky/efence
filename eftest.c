@@ -24,7 +24,7 @@ struct diagnostic {
 extern int	EF_PROTECT_BELOW;
 extern int	EF_ALIGNMENT;
 
-static jmp_buf	env;
+static sigjmp_buf	env;
 
 /*
  * There is still too little standardization of the arguments and return
@@ -40,13 +40,13 @@ int signalNumber
 )
  {
 	signal(PAGE_PROTECTION_VIOLATED_SIGNAL, SIG_DFL);
-	longjmp(env, 1);
+	siglongjmp(env, 1);
 }
 
 static int
 gotSegmentationFault(int (*test)(void))
 {
-	if ( setjmp(env) == 0 ) {
+	if ( sigsetjmp(env,1) == 0 ) {
 		int			status;
 
 		signal(PAGE_PROTECTION_VIOLATED_SIGNAL

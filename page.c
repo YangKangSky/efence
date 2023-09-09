@@ -39,7 +39,7 @@ static caddr_t	startAddr = (caddr_t) 0;
 #if !defined(ANDROID)
 #if ( !defined(sgi) && !defined(_AIX) &&!defined(__USE_BSD))
 extern int	sys_nerr;
-extern char *	sys_errlist[];
+/*extern char *	sys_errlist[];*/
 #endif
 #endif
 
