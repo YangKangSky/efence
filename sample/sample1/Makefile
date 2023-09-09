@@ -28,7 +28,7 @@ eftest_share:  test.o
 
 
 clean:
-	rm -rf eftest_static eftest_share
+	rm -rf eftest_static eftest_share test.o
 
 #./eftest_static 
 #LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../  ./eftest_share 

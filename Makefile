@@ -17,6 +17,9 @@ PACKAGE_SOURCE= README efence.3 Makefile efence.h \
 OBJECTS= efence.o page.o print.o
 OBJECTS_WRAPPER= efence_wrap.o page.o print.o
 
+
+.PHONY: all clean sample $(SUBDIRS)
+
 all:	libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so tstheap eftest
 	@ echo
 	@ echo "Testing Electric Fence."
@@ -37,7 +40,7 @@ install: libefence.a efence.3 libefence.so.0.0
 	ln -s libefence.so.0.0 $(LIB_INSTALL_DIR)/libefence.so
 	$(INSTALL) -m 644 efence.3 $(MAN_INSTALL_DIR)/efence.3
 
-clean:
+clean: sample_clean
 	- rm -f $(OBJECTS) efence_wrap.o tstheap.o eftest.o tstheap eftest \
 	 libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so libefence.cat ElectricFence.shar
 
@@ -79,3 +82,20 @@ $(OBJECTS) tstheap.o eftest.o: efence.h
 
 .c.o:
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+
+SAMPLE_DIRS := $(filter $(wildcard sample/sample*), $(wildcard sample/*))
+
+
+.PHONY: $(SAMPLE_DIRS)
+
+sample_build: $(SAMPLE_DIRS)
+	
+$(SAMPLE_DIRS):
+	echo "1 - $(SAMPLE_DIRS)"
+	$(MAKE) -C $@
+
+sample_clean:
+	for dir in $(SAMPLE_DIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done

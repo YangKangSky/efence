@@ -16,7 +16,7 @@ $(LIB_NAME): MemoryOverrun.c
 	$(CC) $(CFLAGS) -shared -fPIC -o $(LIB_NAME) MemoryOverrun.c -lpthread $(LDFLAGS)
 
 clean:
-	rm -f $(LIB_NAME) test 
+	rm -f $(LIB_NAME) test  libefence_wrapper.so
 
 run:
 	rm -rf ./libefence_wrapper.so
