@@ -7,9 +7,9 @@ BIN_INSTALL_DIR= $(prefix)/bin
 LIB_INSTALL_DIR= $(prefix)/lib
 MAN_INSTALL_DIR= $(prefix)/man/man3
 
-CC= cc
-AR= ar
-INSTALL= install
+CC?= cc
+AR?= ar
+INSTALL?= install
 
 
 all: eftest_static eftest_share test.o 

@@ -1,8 +1,9 @@
-CC = gcc
+CC?= cc
+AR?= ar
+INSTALL?= install
+
 CFLAGS = -Wall -Werror
-
 LIB_NAME = libMemoryOverrun.so
-
 
 .PHONY: $(LIB_NAME) 
 

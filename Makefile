@@ -7,9 +7,9 @@ BIN_INSTALL_DIR= $(prefix)/bin
 LIB_INSTALL_DIR= $(prefix)/lib
 MAN_INSTALL_DIR= $(prefix)/man/man3
 
-CC= cc
-AR= ar
-INSTALL= install
+CC?= cc
+AR?= ar
+INSTALL?= install
 
 PACKAGE_SOURCE= README efence.3 Makefile efence.h \
 	efence.c page.c print.c eftest.c tstheap.c CHANGES
@@ -58,7 +58,7 @@ libefence.a: $(OBJECTS)
 	$(AR) crv libefence.a $(OBJECTS)
 
 libefence.so: $(OBJECTS)
-	gcc -g -shared -Wl,-soname,libefence.so -o libefence.so \
+	$(CC) -g -shared -Wl,-soname,libefence.so -o libefence.so \
 		$(OBJECTS) -lpthread -lc 
 
 libefence_wrapper.a: $(OBJECTS_WRAPPER)
@@ -66,7 +66,7 @@ libefence_wrapper.a: $(OBJECTS_WRAPPER)
 	$(AR) crv libefence_wrapper.a $(OBJECTS_WRAPPER)
 
 libefence_wrapper.so: $(OBJECTS_WRAPPER)
-	gcc -g -shared -Wl,-soname,libefence_wrapper.so -o libefence_wrapper.so \
+	$(CC) -g -shared -Wl,-soname,libefence_wrapper.so -o libefence_wrapper.so \
 		$(OBJECTS_WRAPPER) -lpthread -lc 
 
 
