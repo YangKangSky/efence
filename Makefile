@@ -15,8 +15,9 @@ PACKAGE_SOURCE= README efence.3 Makefile efence.h \
 	efence.c page.c print.c eftest.c tstheap.c CHANGES
 
 OBJECTS= efence.o page.o print.o
+OBJECTS_WRAPPER= efence_wrap.o page.o print.o
 
-all:	libefence.a libefence.so.0.0 tstheap eftest
+all:	libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so tstheap eftest
 	@ echo
 	@ echo "Testing Electric Fence."
 	@ echo "After the last test, it should print that the test has PASSED."
@@ -37,8 +38,8 @@ install: libefence.a efence.3 libefence.so.0.0
 	$(INSTALL) -m 644 efence.3 $(MAN_INSTALL_DIR)/efence.3
 
 clean:
-	- rm -f $(OBJECTS) tstheap.o eftest.o tstheap eftest \
-	 libefence.a libefence.so.0.0 libefence.cat ElectricFence.shar
+	- rm -f $(OBJECTS) efence_wrap.o tstheap.o eftest.o tstheap eftest \
+	 libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so libefence.cat ElectricFence.shar
 
 roff:
 	nroff -man < efence.3 > efence.cat
@@ -53,9 +54,18 @@ libefence.a: $(OBJECTS)
 	- rm -f libefence.a
 	$(AR) crv libefence.a $(OBJECTS)
 
-libefence.so.0.0: $(OBJECTS)
-	gcc -g -shared -Wl,-soname,libefence.so.0 -o libefence.so.0.0 \
+libefence.so: $(OBJECTS)
+	gcc -g -shared -Wl,-soname,libefence.so -o libefence.so \
 		$(OBJECTS) -lpthread -lc 
+
+libefence_wrapper.a: $(OBJECTS_WRAPPER)
+	- rm -f libefence_wrapper.a
+	$(AR) crv libefence_wrapper.a $(OBJECTS_WRAPPER)
+
+libefence_wrapper.so: $(OBJECTS_WRAPPER)
+	gcc -g -shared -Wl,-soname,libefence_wrapper.so -o libefence_wrapper.so \
+		$(OBJECTS_WRAPPER) -lpthread -lc 
+
 
 tstheap: libefence.a tstheap.o
 	- rm -f tstheap
