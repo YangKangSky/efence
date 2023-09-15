@@ -17,9 +17,11 @@ PACKAGE_SOURCE= README efence.3 Makefile efence.h \
 OBJECTS= efence.o page.o print.o
 OBJECTS_WRAPPER= efence_wrap.o page.o print.o
 
+OBJECTS_ALL = $(OBJECTS) $(OBJECTS_WRAPPER)
+
 TARGET_LIST = libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so tstheap eftest
 
-.PHONY: all clean sample $(SUBDIRS) ${TARGET_LIST}
+.PHONY: all clean sample $(SUBDIRS) $(TARGET_LIST) $(OBJECTS_ALL)
 
 all: ${TARGET_LIST}
 	make sample_build
@@ -76,8 +78,10 @@ eftest: libefence.a eftest.o
 
 $(OBJECTS) tstheap.o eftest.o: efence.h
 
-.c.o:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(OBJECTS_ALL) : %.o : %.c
+	echo "123"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 SAMPLE_DIRS := $(filter $(wildcard sample/sample*), $(wildcard sample/*))
