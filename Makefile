@@ -1,5 +1,5 @@
 PIC= -fPIC
-CFLAGS= -g -DUSE_SEMAPHORE $(PIC)
+CFLAGS += -g -DUSE_SEMAPHORE $(PIC)
 LIBS= -lpthread
 
 prefix=/usr
@@ -17,10 +17,11 @@ PACKAGE_SOURCE= README efence.3 Makefile efence.h \
 OBJECTS= efence.o page.o print.o
 OBJECTS_WRAPPER= efence_wrap.o page.o print.o
 
+TARGET_LIST = libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so tstheap eftest
 
-.PHONY: all clean sample $(SUBDIRS)
+.PHONY: all clean sample $(SUBDIRS) ${TARGET_LIST}
 
-all: libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so tstheap eftest
+all: ${TARGET_LIST}
 	make sample_build
 	echo "done"
 
