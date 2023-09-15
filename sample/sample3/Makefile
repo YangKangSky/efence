@@ -2,23 +2,32 @@ CC?= cc
 AR?= ar
 INSTALL?= install
 
-CFLAGS = -Wall -Werror
-LIB_NAME = libMemoryOverrun.so
-
-.PHONY: $(LIB_NAME) 
-
-all: test
-
+PIC= -fPIC
+CFLAGS += -Wall -Werror $(PIC)
 LDFLAGS +=  -Wl,--wrap,malloc -Wl,--wrap,realloc -Wl,--wrap,calloc -Wl,--wrap,free -lpthread  -L./../../ -lefence_wrapper
 
-test: test.c $(LIB_NAME) 
-	$(CC) $(CFLAGS) -o test test.c  -lpthread $(LDFLAGS) -L. -lMemoryOverrun 
+LIB_NAME := libMemoryOverrun.so
+SRCS := test.c MemoryOverrun.c
+OBJS := ${SRCS:c=o} 
+#PROGS := ${SRCS:.c=}
+PROGS := test 
 
-$(LIB_NAME): MemoryOverrun.c 
-	$(CC) $(CFLAGS) -shared -fPIC -o $(LIB_NAME) MemoryOverrun.c -lpthread $(LDFLAGS)
+.PHONY: $(LIB_NAME)  $(PROGS)
 
+all: $(LIB_NAME)  $(PROGS)
+
+
+
+test: test.o $(LIB_NAME) 
+	$(CC) $(CFLAGS) -o test test.o  -lpthread $(LDFLAGS) -L. -lMemoryOverrun 
+
+$(LIB_NAME): MemoryOverrun.o
+	$(CC) $(CFLAGS) -shared -fPIC -o $(LIB_NAME) MemoryOverrun.o -lpthread $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CFLAGS)  -c $< -o $@
 clean:
-	rm -f $(LIB_NAME) test  libefence_wrapper.so
+	rm -f $(LIB_NAME) $(PROGS)  libefence_wrapper.so $(OBJS)
 
 run:
 	rm -rf ./libefence_wrapper.so

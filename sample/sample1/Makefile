@@ -1,31 +1,41 @@
+CC?= cc
+AR?= ar
+INSTALL?= install
+
+
 PIC= -fPIC
-CFLAGS= -g -DUSE_SEMAPHORE $(PIC)
-LIBS= -lpthread
+CFLAGS += -g -DUSE_SEMAPHORE $(PIC)
+LDFLAGS += -lpthread
 
 prefix=/usr
 BIN_INSTALL_DIR= $(prefix)/bin
 LIB_INSTALL_DIR= $(prefix)/lib
 MAN_INSTALL_DIR= $(prefix)/man/man3
 
-CC?= cc
-AR?= ar
-INSTALL?= install
 
+SRCS := test.c
+OBJS := ${SRCS:c=o} 
+#PROGS := ${SRCS:.c=}
+PROGS := eftest_static eftest_share
 
-all: eftest_static eftest_share test.o 
-	make run
+.PHONY: all $(OBJS) $(PROGS)
 
-eftest_static:  test.o
+all: $(OBJS) $(PROGS)
+	echo "done"
+
+eftest_static: test.o
 	- rm -f eftest
-	$(CC) $(CFLAGS) test.o ../../libefence.a -o eftest_static $(LIBS)
+	$(CC) $(CFLAGS) -o eftest_static test.o ../../libefence.a $(LDFLAGS)
 
 eftest_share:  test.o
 	- rm -f eftest
-	$(CC) $(CFLAGS) -o eftest_share test.c -L./../../ -lefence  -lpthread 
+	$(CC) $(CFLAGS) -o eftest_share test.c -L./../../ -lefence  $(LDFLAGS)
 
-.c.o:
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS)  -c $< -o $@
 
+test.o: test.c
+	$(CC) $(CFLAGS)  -c $< -o $@
 
 clean:
 	rm -rf eftest_static eftest_share test.o
