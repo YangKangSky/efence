@@ -20,4 +20,4 @@ clean:
 
 #LD_PRELOAD=/path/to/mylib.so ./myprogram
 run:
-	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. LD_PRELOAD=./../../libefence.so.0.0  ./test
+	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. LD_PRELOAD=./../../libefence.so  ./test

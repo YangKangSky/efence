@@ -528,7 +528,7 @@ allocateMoreSlots(void)
 #if defined(ANDROID) && defined(DYNAMIC_LIB)
 __attribute__((visibility("default")))
 extern C_LINKAGE void *
-efence_memalign(size_t alignment, size_t userSize)
+memalign(size_t alignment, size_t userSize)
 #else
 extern C_LINKAGE void *
 memalign(size_t alignment, size_t userSize)
@@ -547,8 +547,8 @@ memalign(size_t alignment, size_t userSize)
 
 	lock();
 
-	if ( userSize == 0 && !EF_ALLOW_MALLOC_0 )
-		EF_Abort("Allocating 0 bytes, probably a bug.");
+	//if ( userSize == 0 && !EF_ALLOW_MALLOC_0 )
+	//	EF_Abort("Allocating 0 bytes, probably a bug.");
 
 	/*
 	 * If EF_PROTECT_BELOW is set, all addresses returned by malloc()
@@ -977,7 +977,10 @@ efence_calloc(size_t nelem, size_t elsize)
 #endif
 {
 	size_t	size = nelem * elsize;
-	void *	allocation = malloc(size);
+	//void *	allocation = efence_malloc(size);
+	if ( allocationList == 0 )
+		initialize();	/* This sets EF_ALIGNMENT */
+	void *	allocation = memalign(EF_ALIGNMENT,size);
 
 	memset(allocation, 0, size);
 	return allocation;

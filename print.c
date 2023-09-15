@@ -125,6 +125,7 @@ do_abort()
 	 * mis-guided implementations of abort() flush stdio, which can
 	 * cause malloc() or free() to be called.
 	 */
+	*(int *)0 = 0;
 	kill(getpid(), SIGILL);
 	/* Just in case something handles SIGILL and returns, exit here. */
 	_exit(-1);

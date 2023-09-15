@@ -20,15 +20,9 @@ OBJECTS_WRAPPER= efence_wrap.o page.o print.o
 
 .PHONY: all clean sample $(SUBDIRS)
 
-all:	libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so tstheap eftest
-	@ echo
-	@ echo "Testing Electric Fence."
-	@ echo "After the last test, it should print that the test has PASSED."
-	./eftest
-	./tstheap 3072
-	@ echo
-	@ echo "Electric Fence confidence test PASSED." 
-	@ echo
+all: libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so tstheap eftest
+	make sample_build
+	echo "done"
 
 install: libefence.a efence.3 libefence.so.0.0
 	$(INSTALL) -m 755 ef.sh $(BIN_INSTALL_DIR)/ef
@@ -43,6 +37,7 @@ install: libefence.a efence.3 libefence.so.0.0
 clean: sample_clean
 	- rm -f $(OBJECTS) efence_wrap.o tstheap.o eftest.o tstheap eftest \
 	 libefence.a libefence_wrapper.a libefence.so libefence_wrapper.so libefence.cat ElectricFence.shar
+	 make sample_clean
 
 roff:
 	nroff -man < efence.3 > efence.cat
@@ -85,6 +80,17 @@ $(OBJECTS) tstheap.o eftest.o: efence.h
 
 
 SAMPLE_DIRS := $(filter $(wildcard sample/sample*), $(wildcard sample/*))
+
+
+run:
+	@ echo
+	@ echo "Testing Electric Fence."
+	@ echo "After the last test, it should print that the test has PASSED."
+	./eftest
+	./tstheap 3072
+	@ echo
+	@ echo "Electric Fence confidence test PASSED." 
+	@ echo
 
 
 .PHONY: $(SAMPLE_DIRS)
