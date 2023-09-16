@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <malloc.h>
+//#include <malloc.h>
 int main(void)
 {
     int *a = (int*)malloc(2*sizeof(int));

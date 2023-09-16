@@ -5,7 +5,7 @@ INSTALL?= install
 
 PIC= -fPIC
 CFLAGS += -g -DUSE_SEMAPHORE $(PIC)
-LDFLAGS += -lpthread
+LDFLAGS += -lpthread -lc
 
 prefix=/usr
 BIN_INSTALL_DIR= $(prefix)/bin
