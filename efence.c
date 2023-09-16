@@ -816,6 +816,7 @@ free(void * address)
 	Slot *	previousSlot = 0;
 	Slot *	nextSlot = 0;
 
+        printf("override free\n");
 	if ( address == 0 )
 		return;
 
@@ -961,6 +962,7 @@ extern C_LINKAGE void *
 malloc(size_t size)
 #endif
 {
+        printf("override malloc\n");
 	if ( allocationList == 0 )
 		initialize();	/* This sets EF_ALIGNMENT */
 
