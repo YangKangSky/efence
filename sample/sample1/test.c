@@ -2,8 +2,11 @@
 //#include <malloc.h>
 int main(void)
 {
-    int *a = (int*)malloc(2*sizeof(int));
+    printf("main in\n");
+    int *a = (int*)malloc(3*sizeof(int));
   
+    return 0;
+    printf("main in 1\n");
     for (int i=0;i<=2;i++) {
         a[i] = i;
         printf("%d\n", a[i]);
