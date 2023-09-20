@@ -1,18 +1,37 @@
 #include <stdio.h>
 //#include <malloc.h>
-int main(void)
+
+
+void test1(void)
 {
-    printf("main in\n");
     int *a = (int*)malloc(3*sizeof(int));
   
-    return 0;
     printf("main in 1\n");
     for (int i=0;i<=2;i++) {
         a[i] = i;
         printf("%d\n", a[i]);
     }
     printf("free\n"); 
-	sleep(10);
-    free(a);
+
+    free(a);	
+	
+}
+
+
+//char *	allocation;
+int
+allocateMemory(void)
+{
+	char *allocation = (char *)malloc(1);
+
+	return 0;
+}
+
+int main(void)
+{
+    printf("main in\n");
+	test1();
+	allocateMemory();
+	sleep(5);
     return 0;
 }

@@ -4,8 +4,8 @@ INSTALL?= install
 
 
 PIC= -fPIC
-CFLAGS += -g -DUSE_SEMAPHORE $(PIC)
-LDFLAGS += -lpthread -lc
+CFLAGS += -g -O0 -ggdb -DUSE_SEMAPHORE $(PIC) -I../../
+LDFLAGS += -lpthread  -lc
 
 prefix=/usr
 BIN_INSTALL_DIR= $(prefix)/bin
@@ -26,6 +26,7 @@ all: $(OBJS) $(PROGS)
 eftest_static: test.o
 	- rm -f eftest
 	$(CC) $(CFLAGS) -o eftest_static test.o ../../libefence.a $(LDFLAGS)
+	#$(CC) $(CFLAGS) test.o -L./../../ -l:libefence.a  $(LDFLAGS) -o eftest_static
 
 eftest_share:  test.o
 	- rm -f eftest
