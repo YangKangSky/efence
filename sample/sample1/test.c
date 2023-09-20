@@ -4,7 +4,7 @@
 
 void test1(void)
 {
-    int *a = (int*)malloc(3*sizeof(int));
+    int *a = (int*)malloc(2*sizeof(int));
   
     printf("main in 1\n");
     for (int i=0;i<=2;i++) {

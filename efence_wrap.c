@@ -816,7 +816,7 @@ efence_free(void * address)
 	Slot *	previousSlot = 0;
 	Slot *	nextSlot = 0;
 
-        printf("override free\n");
+    EF_Print("\nElectricFence override free\n ");
 	if ( address == 0 )
 		return;
 
@@ -962,7 +962,7 @@ extern C_LINKAGE void *
 efence_malloc(size_t size)
 #endif
 {
-        printf("override malloc\n");
+    //EF_Print("override efence_malloc\n");
 	if ( allocationList == 0 )
 		initialize();	/* This sets EF_ALIGNMENT */
 
@@ -979,10 +979,10 @@ efence_calloc(size_t nelem, size_t elsize)
 #endif
 {
 	size_t	size = nelem * elsize;
-	//void *	allocation = efence_malloc(size);
-	if ( allocationList == 0 )
-		initialize();	/* This sets EF_ALIGNMENT */
-	void *	allocation = memalign(EF_ALIGNMENT,size);
+	void *	allocation = efence_malloc(size);
+	//if ( allocationList == 0 )
+	//	initialize();	/* This sets EF_ALIGNMENT */
+	//void *	allocation = memalign(EF_ALIGNMENT,size);
 
 	memset(allocation, 0, size);
 	return allocation;
@@ -1020,37 +1020,31 @@ char *strcat(char *d, const char *s)
 
 void  __wrap_free(void *address) {
     // Custom behavior before calling the real free
-    printf("Calling wrapped free\n");
+    //EF_Print("Calling wrapped free\n");
     
     // Call the real free
     efence_free(address);
     
     // Custom behavior after calling the real free
-    printf("Freeing memory address: %p\n", address);
+    //EF_Print("Freeing memory address: %p\n", address);
 }
 
 void *__wrap_realloc(void *oldBuffer, size_t newSize) {
     // Custom behavior before calling the real realloc
-    printf("Calling wrapped realloc\n");
+    //EF_Print("Calling wrapped realloc\n");
     
     // Call the real realloc
     void *result = efence_realloc(oldBuffer, newSize);
-    
-    // Custom behavior after calling the real realloc
-    printf("Reallocated memory address: %p\n", result);
     
     return result;
 }
 
 void *__wrap_malloc(size_t size) {
     // Custom behavior before calling the real malloc
-    printf("Calling wrapped malloc\n");
+    //EF_Print("Calling wrapped malloc\n");
     
     // Call the real malloc
     void *result = efence_malloc(size);
-    
-    // Custom behavior after calling the real malloc
-    printf("Allocated memory address: %p\n", result);
     
     return result;
 }
@@ -1058,14 +1052,11 @@ void *__wrap_malloc(size_t size) {
 
 void *__wrap_calloc(size_t nelem, size_t elsize) {
     // Custom behavior before calling the real calloc
-    printf("Calling wrapped calloc\n");
+    //EF_Print("Calling wrapped calloc\n");
     
     // Call the real calloc
     void *result = efence_calloc(nelem, elsize);
-    
-    // Custom behavior after calling the real calloc
-    printf("Allocated memory address: %p\n", result);
-    
+        
     return result;
 }
 
