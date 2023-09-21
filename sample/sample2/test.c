@@ -6,9 +6,9 @@ extern void memory_normal();
 
 int main() {
     printf("Calling memory_overrun() from MemoryOverrun library...\n");
-	memory_calloc();
+	//memory_calloc();
 	//memory_normal();
-    //memory_overrun();
+    memory_overrun();
     printf("Returned from memory_overrun()\n");
     return 0;
 }

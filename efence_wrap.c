@@ -528,10 +528,10 @@ allocateMoreSlots(void)
 #if defined(ANDROID) && defined(DYNAMIC_LIB)
 __attribute__((visibility("default")))
 extern C_LINKAGE void *
-memalign(size_t alignment, size_t userSize)
+efence_memalign(size_t alignment, size_t userSize)
 #else
 extern C_LINKAGE void *
-memalign(size_t alignment, size_t userSize)
+efence_memalign(size_t alignment, size_t userSize)
 #endif
 {
 	register Slot *	slot;
@@ -966,7 +966,7 @@ efence_malloc(size_t size)
 	if ( allocationList == 0 )
 		initialize();	/* This sets EF_ALIGNMENT */
 
-	return memalign(EF_ALIGNMENT, size);
+	return efence_memalign(EF_ALIGNMENT, size);
 }
 
 #if defined(ANDROID) && defined(DYNAMIC_LIB)
@@ -998,7 +998,7 @@ __attribute__((visibility("default")))
 extern C_LINKAGE void *
 valloc (size_t size)
 {
-	return memalign(bytesPerPage, size);
+	return efence_memalign(bytesPerPage, size);
 }
 
 #ifdef __hpux
@@ -1020,7 +1020,7 @@ char *strcat(char *d, const char *s)
 
 void  __wrap_free(void *address) {
     // Custom behavior before calling the real free
-    //EF_Print("Calling wrapped free\n");
+    EF_Print("Calling wrapped free\n");
     
     // Call the real free
     efence_free(address);
@@ -1031,7 +1031,7 @@ void  __wrap_free(void *address) {
 
 void *__wrap_realloc(void *oldBuffer, size_t newSize) {
     // Custom behavior before calling the real realloc
-    //EF_Print("Calling wrapped realloc\n");
+    EF_Print("Calling wrapped realloc\n");
     
     // Call the real realloc
     void *result = efence_realloc(oldBuffer, newSize);
@@ -1041,7 +1041,7 @@ void *__wrap_realloc(void *oldBuffer, size_t newSize) {
 
 void *__wrap_malloc(size_t size) {
     // Custom behavior before calling the real malloc
-    //EF_Print("Calling wrapped malloc\n");
+    EF_Print("Calling wrapped malloc\n");
     
     // Call the real malloc
     void *result = efence_malloc(size);
@@ -1052,7 +1052,7 @@ void *__wrap_malloc(size_t size) {
 
 void *__wrap_calloc(size_t nelem, size_t elsize) {
     // Custom behavior before calling the real calloc
-    //EF_Print("Calling wrapped calloc\n");
+    EF_Print("Calling wrapped calloc\n");
     
     // Call the real calloc
     void *result = efence_calloc(nelem, elsize);
