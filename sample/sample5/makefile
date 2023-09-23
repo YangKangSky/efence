@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 CC ?= gcc
 AR ?= ar
+=======
+CC = gcc
+>>>>>>> 79148d57e652a9e89446248c59ca0a72c342ee67
 CFLAGS = -fpic
 
 # 库A的源文件和目标文件
@@ -38,19 +42,31 @@ $(D_EXEC): $(A_DYNAMIC_LIB) $(B_DYNAMIC_LIB) $(D_OBJ) $(C_DYNAMIC_LIB)
 	$(CC) $(CFLAGS) main.o  -L. -lA -lB -L./../../  -l:libefence.a  -lpthread -o D
 
 $(A_STATIC_LIB): $(A_OBJ)
+<<<<<<< HEAD
 	$(AR) rcs $@ $^
+=======
+	ar rcs $@ $^
+>>>>>>> 79148d57e652a9e89446248c59ca0a72c342ee67
 
 $(A_DYNAMIC_LIB): $(A_OBJ)
 	$(CC) $(CFLAGS) -shared $^ -o $@
 
 $(B_STATIC_LIB): $(B_OBJ)
+<<<<<<< HEAD
 	$(AR) rcs $@ $^
+=======
+	ar rcs $@ $^
+>>>>>>> 79148d57e652a9e89446248c59ca0a72c342ee67
 
 $(B_DYNAMIC_LIB): $(B_OBJ)
 	$(CC) $(CFLAGS) -shared $^ -o $@
 
 $(C_STATIC_LIB): $(C_OBJ)
+<<<<<<< HEAD
 	$(AR) rcs $@ $^
+=======
+	ar rcs $@ $^
+>>>>>>> 79148d57e652a9e89446248c59ca0a72c342ee67
 
 $(C_DYNAMIC_LIB): $(C_OBJ)
 	$(CC) $(CFLAGS) -shared $^ -o $@
@@ -65,6 +81,10 @@ $(C_OBJ): $(C_SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(D_OBJ): $(D_SRC)
+<<<<<<< HEAD
+=======
+	echo "111"
+>>>>>>> 79148d57e652a9e89446248c59ca0a72c342ee67
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(D0_OBJ): $(D0_SRC)
