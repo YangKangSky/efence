@@ -66,6 +66,18 @@ s2_test_wrapper_share依赖libMemoryOverrun_wrap.so，libMemoryOverrun_wrap.so�
 
 
 
+## sample5：
+
+改用例主要用例演示符号替换的影响范围。
+
+```
+LD_PRELOAD=./libC.so LD_LIBRARY_PATH=$LD_LIBRARY_PATH:. ./D
+```
+
+程序D中包含malloc的定义。库A，B,C中会引用malloc，实际程序运行时，用的时D中定义的malloc，而不是标准库的malloc.
+
+另外，子进程D0的malloc没有受到影响。
+
 
 
 
